@@ -15,12 +15,16 @@
 <body>
     <h2>Cars List</h2>
     <a class="btn btn-primary" href="addcar">Add New Car</a>
+    <a class="btn btn-primary" href="addinsu">Add New Insu</a>
+    <a class="btn btn-primary" href="addperson">Add Person</a>
     <table class="table">
         <thead>
             <tr>
-            <th scope="col">Id</th>
             <th scope="col">Name</th>
-            <th scope="col">Year</th>
+            <th scope="col">Address</th>
+            <th scope="col">Des</th>
+            <th scope="col">Name</th>
+            <th scope="col">year</th>
             <th scope="col">Price</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
@@ -29,8 +33,10 @@
         <tbody>
             {% for car in cars %}
                 <tr>
-                    <td>{{ car.id }}</th>
-                    <td>{{ car.name }}</td>
+                    <td>{{ car.name }}</th>
+                    <td>{{ car.address }}</td>
+                    <td>{{ car.des }}</td>
+                    <td>{{ car.carname }}</td>
                     <td>{{ car.year }}</td>
                     <td>{{ car.price }}</td>
                     <td><a href='updatecar/{{ car.id }}'>Edit</a></td>
