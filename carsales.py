@@ -19,11 +19,13 @@ def main():
     cars = []
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute(" select p.id,p.name,p.address,i.des,c.name,c.year,c.price from CarSeles.TblPersons p, CarSeles.TblCars c, CarSeles.TblInsurance i where p.Car_ID=c.ID and p.Insurance_Id=i.ID;")
+    cursor.execute(" select c.id,p.id,p.name,p.address,i.des,c.name,c.year,c.price from CarSeles.TblPersons p, CarSeles.TblCars c, CarSeles.TblInsurance i where p.Car_ID=c.ID and p.Insurance_Id=i.ID;")
     for row in cursor.fetchall():
-        cars.append({"id": row[0],"name": row[1], "address": row[2], "des": row[3], "carname": row[4], "year": row[5], "price": row[6]})
-    conn.close()
+        cars.append({"id": row[0],"idp": row[1],"name": row[2], "address": row[3], "des": row[4], "carname": row[5], "year": row[6], "price": row[7]})
+    conn.close()    
     return render_template("carslist.html", cars = cars)
+
+
 
 @carsales.route("/addcar", methods = ['GET','POST'])
 def addcar():
@@ -40,6 +42,19 @@ def addcar():
         conn.commit()
         conn.close()
         return redirect('/')
+
+
+@carsales.route("/")
+def carlist():
+    carslist = []
+    conn = connection()
+    cursor = conn.cursor()
+    cursor.execute(" select id, name, year, price from CarSeles.TblCars;")
+    for row in cursor.fetchall():
+        carslist.append({"id": row[0],"name": row[1], "year": row[2], "price": row[3]})
+    conn.close()
+    return render_template("carslist.html",carslist = carslist)
+
 
 
 @carsales.route("/addinsu", methods = ['GET','POST'])
@@ -75,6 +90,16 @@ def addperson():
         conn.close()
         return redirect('/')        
 
+@carsales.route('/deletecar/<int:id>')
+def deletecar(id):
+    conn = connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM TblPersons WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/')
+
+
 @carsales.route('/updatecar/<int:id>',methods = ['GET','POST'])
 def updatecar(id):
     cr = []
@@ -85,7 +110,7 @@ def updatecar(id):
         for row in cursor.fetchall():
             cr.append({"id": row[0], "name": row[1], "year": row[2], "price": row[3]})
         conn.close()
-        return render_template("addcar.html", car = cr[0])
+        return render_template("addcar.html", car = {})
     if request.method == 'POST':
         name = str(request.form["name"])
         year = int(request.form["year"])
@@ -94,31 +119,29 @@ def updatecar(id):
         conn.commit()
         conn.close()
         return redirect('/')
+        
 
-@carsales.route('/updateperson',methods = ['GET','POST'])
-def editperson():
-    
+@carsales.route('/updateperson/<int:idp>',methods = ['GET','POST'])
+def editperson(idp):
+    pr = []
     conn = connection()
     cursor = conn.cursor()
+    if request.method == 'GET':
+        cursor.execute("SELECT * FROM TblPersons WHERE id=?", (id,))
+        for row in cursor.fetchall():
+            pr.append({"idp": row[0], "name": row[1], "address": row[2], "insurance_id": row[3],"car_id": row[4]})
+        conn.close()
+        return render_template("addperson.html", perso = {})
     if request.method == 'POST':
-        idd = int(request.form["id"])
         name = str(request.form["name"])
         address = str(request.form["address"])
         insurance = int(request.form["insurance_id"])
         car = int(request.form["Car_id"])
-        cursor.execute("UPDATE TblPersons SET name = ?, address = ?, insurance_id = ?, car_id = ? WHERE id = ?", (name, address, insurance, car,idd))
+        cursor.execute("UPDATE CarSeles.TblPersons SET Name = ?, Address = ?, Insurance_Id = ?, Car_Id = ? WHERE ID = ?", (name, address, insurance, car,idp))
         conn.commit()
         conn.close()
         return redirect('/')        
 
-@carsales.route('/deletecar/<int:id>')
-def deletecar(id):
-    conn = connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM TblPersons WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect('/')
 
 if(__name__ == "__main__"):
     carsales.run()

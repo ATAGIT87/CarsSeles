@@ -21,6 +21,7 @@
         <thead>
             <tr>
             <th scope="col">Id</th>
+            <th scope="col">Id Person</th>
             <th scope="col">Name</th>
             <th scope="col">Address</th>
             <th scope="col">Des</th>
@@ -35,16 +36,18 @@
             {% for car in cars %}
                 <tr>
                     <td>{{ car.id }}</th>
+                    <td>{{ car.idp }}</th>
                     <td>{{ car.name }}</th>
                     <td>{{ car.address }}</td>
                     <td>{{ car.des }}</td>
                     <td>{{ car.carname }}</td>
                     <td>{{ car.year }}</td>
                     <td>{{ car.price }}</td>
-                    <td><a href='updatecar/{{ car.id }}'>Edit</a></td>
+                    <td><a href='updatecar/{{ car.id }}'>Edit Car</a></td>
                     <td><a href='deletecar/{{ car.id }}'>Delete</a></td>
+                    <td><a href='updateperson/{{ car.idp }}'>Edit Person</a></td>
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table>   
 </body>
