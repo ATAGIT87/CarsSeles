@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect
-import mariadb
+# import mariadb
+import pymysql
 import sys
 
 carsales = Flask(__name__)
 
 def connection():
-    conn = mariadb.connect(
+    conn = pymysql.connect(
         user="root", #Your login user
         password="Password123!", #Your login password
         host="127.0.0.1", #Your server name 
@@ -38,7 +39,7 @@ def addcar():
         price = float(request.form["price"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblCars (id, name, year, price) VALUES (?, ?, ?, ?)", (id, name, year, price) )
+        cursor.execute("INSERT INTO TblCars (id, name, year, price) VALUES (%s, %s, %s, %s)", (id, name, year, price) )
         conn.commit()
         conn.close()
         return redirect('/')
@@ -63,10 +64,10 @@ def addinsu():
         return render_template("addinsu.html", insu = {})
     if request.method == 'POST':
         id = int(request.form["id"])
-        des = request.form["des"]
+        des = str(request.form["des"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblInsurance (id, des) VALUES (?, ?)", (id, des) )
+        cursor.execute("INSERT INTO TblInsurance (id, des) VALUES (%s, %s)", (int(id), str(des)) )
         conn.commit()
         conn.close()
         return redirect('/')
@@ -85,7 +86,7 @@ def addperson():
         car = int(request.form["car"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblPersons (id,name,address,insurance_id,car_id) VALUES (?, ?,?,?,?)", (id, name,address,insu,car) )
+        cursor.execute("INSERT INTO TblPersons (id,name,address,insurance_id,car_id) VALUES (%s, %s,%s,%s,%s)", (id, name,address,insu,car) )
         conn.commit()
         conn.close()
         return redirect('/')        
@@ -94,7 +95,8 @@ def addperson():
 def deletecar(id):
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM TblPersons WHERE id=?", (id,))
+    sql=("DELETE FROM TblPersons WHERE id= %s") 
+    cursor.execute(sql, (id,))
     conn.commit()
     conn.close()
     return redirect('/')
@@ -106,7 +108,7 @@ def updatecar(id):
     conn = connection()
     cursor = conn.cursor()
     if request.method == 'GET':
-        cursor.execute("SELECT * FROM TblCars WHERE id=?", (id,))
+        cursor.execute("SELECT * FROM TblCars WHERE id= %s", (id,))
         for row in cursor.fetchall():
             cr.append({"id": row[0], "name": row[1], "year": row[2], "price": row[3]})
         conn.close()
@@ -115,7 +117,10 @@ def updatecar(id):
         name = str(request.form["name"])
         year = int(request.form["year"])
         price = float(request.form["price"])
-        cursor.execute("UPDATE TblCars SET name = ?, year = ?, price = ? WHERE id = ?", (name, year, price, id))
+        conn = connection()
+        cursor = conn.cursor()
+        sql=("UPDATE TblCars SET name = %s, year = %s, price = %s WHERE id = %s")
+        cursor.execute(sql, (name, year, price, id))
         conn.commit()
         conn.close()
         return redirect('/')
@@ -127,7 +132,7 @@ def editperson(idp):
     conn = connection()
     cursor = conn.cursor()
     if request.method == 'GET':
-        cursor.execute("SELECT * FROM TblPersons WHERE id=?", (id,))
+        cursor.execute("SELECT * FROM TblPersons WHERE id=%s", (id,))
         for row in cursor.fetchall():
             pr.append({"idp": row[0], "name": row[1], "address": row[2], "insurance_id": row[3],"car_id": row[4]})
         conn.close()
@@ -137,7 +142,10 @@ def editperson(idp):
         address = str(request.form["address"])
         insurance = int(request.form["insurance_id"])
         car = int(request.form["Car_id"])
-        cursor.execute("UPDATE CarSeles.TblPersons SET Name = ?, Address = ?, Insurance_Id = ?, Car_Id = ? WHERE ID = ?", (name, address, insurance, car,idp))
+        conn = connection()
+        cursor = conn.cursor()
+        sql=("UPDATE CarSeles.TblPersons SET Name = %s, Address = %s, Insurance_Id = %s, Car_Id = %s WHERE ID = %s")
+        cursor.execute(sql, (name, address, int(insurance), int(car), idp))
         conn.commit()
         conn.close()
         return redirect('/')        
