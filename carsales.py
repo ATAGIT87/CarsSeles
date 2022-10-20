@@ -11,7 +11,7 @@ def connection():
         password="Password123!", #Your login password
         host="127.0.0.1", #Your server name 
         port=3306,
-        database="CarSeles")
+        database="carinfo")
     return conn
 	
 
@@ -20,7 +20,7 @@ def main():
     cars = []
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute(" select c.id,p.id,p.name,p.address,i.des,c.name,c.year,c.price from CarSeles.TblPersons p, CarSeles.TblCars c, CarSeles.TblInsurance i where p.Car_ID=c.ID and p.Insurance_Id=i.ID;")
+    cursor.execute(" select c.id,o.id,o.name,o.address,i.des,c.name,c.year,c.price from carinfo.owns o, carinfo.car c, carinfo.insurance i where o.car_id=c.id and o.insu_id=i.id;")
     for row in cursor.fetchall():
         cars.append({"id": row[0],"idp": row[1],"name": row[2], "address": row[3], "des": row[4], "carname": row[5], "year": row[6], "price": row[7]})
     conn.close()    
@@ -39,7 +39,7 @@ def addcar():
         price = float(request.form["price"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblCars (id, name, year, price) VALUES (%s, %s, %s, %s)", (id, name, year, price) )
+        cursor.execute("INSERT INTO car (id, name, year, price) VALUES (%s, %s, %s, %s)", (id, name, year, price) )
         conn.commit()
         conn.close()
         return redirect('/')
@@ -50,7 +50,7 @@ def carlist():
     carslist = []
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute(" select id, name, year, price from CarSeles.TblCars;")
+    cursor.execute(" select id, name, year, price from carinfo.car;")
     for row in cursor.fetchall():
         carslist.append({"id": row[0],"name": row[1], "year": row[2], "price": row[3]})
     conn.close()
@@ -67,7 +67,7 @@ def addinsu():
         des = str(request.form["des"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblInsurance (id, des) VALUES (%s, %s)", (int(id), str(des)) )
+        cursor.execute("INSERT INTO insurance (id, des) VALUES (%s, %s)", (int(id), str(des)) )
         conn.commit()
         conn.close()
         return redirect('/')
@@ -86,7 +86,7 @@ def addperson():
         car = int(request.form["car"])
         conn = connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO TblPersons (id,name,address,insurance_id,car_id) VALUES (%s, %s,%s,%s,%s)", (id, name,address,insu,car) )
+        cursor.execute("INSERT INTO owns (id,name,address,car_id,insu_id) VALUES (%s, %s,%s,%s,%s)", (id, name,address,car,insu) )
         conn.commit()
         conn.close()
         return redirect('/')        
@@ -95,7 +95,7 @@ def addperson():
 def deletecar(id):
     conn = connection()
     cursor = conn.cursor()
-    sql=("DELETE FROM TblPersons WHERE id= %s") 
+    sql=("DELETE FROM owns WHERE id= %s") 
     cursor.execute(sql, (id,))
     conn.commit()
     conn.close()
@@ -108,7 +108,7 @@ def updatecar(id):
     conn = connection()
     cursor = conn.cursor()
     if request.method == 'GET':
-        cursor.execute("SELECT * FROM TblCars WHERE id= %s", (id,))
+        cursor.execute("SELECT * FROM car WHERE id= %s", (id,))
         for row in cursor.fetchall():
             cr.append({"id": row[0], "name": row[1], "year": row[2], "price": row[3]})
         conn.close()
@@ -132,17 +132,17 @@ def editperson(idp):
     conn = connection()
     cursor = conn.cursor()
     if request.method == 'GET':
-        cursor.execute("SELECT * FROM TblPersons WHERE id=%s", (id,))
+        cursor.execute("SELECT * FROM owns WHERE id=%s", (id,))
         for row in cursor.fetchall():
-            pr.append({"idp": row[0], "name": row[1], "address": row[2], "insurance_id": row[3],"car_id": row[4]})
+            pr.append({"idp": row[0], "name": row[1], "address": row[2], "car_id": row[3],"insu_id": row[4]})
         conn.close()
         return render_template("addperson.html", perso = {})
     if request.method == 'POST':
         name = str(request.form["name"])
         address = str(request.form["address"])
-        insurance = int(request.form["insurance_id"])
-        car = int(request.form["Car_id"])
-        sql=("UPDATE CarSeles.TblPersons SET Name = %s, Address = %s, Insurance_Id = %s, Car_Id = %s WHERE ID = %s")
+        car = int(request.form["car_id"])
+        insurance = int(request.form["insu_id"])
+        sql=("UPDATE carinfo.owns SET name = %s, address = %s, car_id = %s, insu_id = %s WHERE id = %s")
         cursor.execute(sql, (name, address, insurance, car, idp))
         conn.commit()
         conn.close()
