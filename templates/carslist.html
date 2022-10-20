@@ -20,10 +20,11 @@
     <table class="table">
         <thead>
             <tr>
+            <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Address</th>
             <th scope="col">Des</th>
-            <th scope="col">Name</th>
+            <th scope="col">Car Name</th>
             <th scope="col">year</th>
             <th scope="col">Price</th>
             <th scope="col">Edit</th>
@@ -33,6 +34,7 @@
         <tbody>
             {% for car in cars %}
                 <tr>
+                    <td>{{ car.id }}</th>
                     <td>{{ car.name }}</th>
                     <td>{{ car.address }}</td>
                     <td>{{ car.des }}</td>

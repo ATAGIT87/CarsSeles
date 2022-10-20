@@ -19,9 +19,9 @@ def main():
     cars = []
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute(" select p.name,p.address,i.des,c.name,c.year,c.price from CarSeles.TblPersons p, CarSeles.TblCars c, CarSeles.TblInsurance i where p.Car_ID=c.ID and p.Insurance_Id=i.ID;")
+    cursor.execute(" select p.id,p.name,p.address,i.des,c.name,c.year,c.price from CarSeles.TblPersons p, CarSeles.TblCars c, CarSeles.TblInsurance i where p.Car_ID=c.ID and p.Insurance_Id=i.ID;")
     for row in cursor.fetchall():
-        cars.append({"name": row[0], "address": row[1], "des": row[2], "carname": row[3], "year": row[4], "price": row[5]})
+        cars.append({"id": row[0],"name": row[1], "address": row[2], "des": row[3], "carname": row[4], "year": row[5], "price": row[6]})
     conn.close()
     return render_template("carslist.html", cars = cars)
 
@@ -95,11 +95,27 @@ def updatecar(id):
         conn.close()
         return redirect('/')
 
+@carsales.route('/updateperson',methods = ['GET','POST'])
+def editperson():
+    
+    conn = connection()
+    cursor = conn.cursor()
+    if request.method == 'POST':
+        idd = int(request.form["id"])
+        name = str(request.form["name"])
+        address = str(request.form["address"])
+        insurance = int(request.form["insurance_id"])
+        car = int(request.form["Car_id"])
+        cursor.execute("UPDATE TblPersons SET name = ?, address = ?, insurance_id = ?, car_id = ? WHERE id = ?", (name, address, insurance, car,idd))
+        conn.commit()
+        conn.close()
+        return redirect('/')        
+
 @carsales.route('/deletecar/<int:id>')
 def deletecar(id):
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM TblCars WHERE id=?", (id,))
+    cursor.execute("DELETE FROM TblPersons WHERE id=?", (id,))
     conn.commit()
     conn.close()
     return redirect('/')
