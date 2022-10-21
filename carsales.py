@@ -2,8 +2,12 @@ from flask import Flask, render_template, request, redirect
 # import mariadb
 import pymysql
 import sys
+from databaseconf import A
 
 carsales = Flask(__name__)
+
+A.a()
+
 
 def connection():
     conn = pymysql.connect(
@@ -13,7 +17,6 @@ def connection():
         port=3306,
         database="carinfo")
     return conn
-	
 
 @carsales.route("/")
 def main():
