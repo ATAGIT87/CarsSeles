@@ -1,6 +1,9 @@
-以下のGitを参考にFlask<->mariaDB環境構築
+# this is my sample project
+# there is 3 tables 
+    * car
+    * insurance
+    * owns (car,insurance)
+# To run this application, follow the command steps below
+# 1- docker-compose up --build
 
-https://github.com/stavshamir/docker-tutorial.git
-
-詳細：参考記事
-https://medium.com/@shamir.stav_83310/dockerizing-a-flask-mysql-app-with-docker-compose-c4f51d20b40d
+# this application is including Flask and Mariadb
