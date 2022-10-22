@@ -1,8 +1,6 @@
-# CarsSeles
-*this is my CarsSeles Project
+以下のGitを参考にFlask<->mariaDB環境構築
 
-Config Database Docker: 
+https://github.com/stavshamir/docker-tutorial.git
 
-docker run -p 127.0.0.1:3306:3306  --name mdb -e MARIADB_ROOT_PASSWORD=Password123! -d mariadb:latest
-
-docker exec -it mdb mariadb --user root -pPassword123!
+詳細：参考記事
+https://medium.com/@shamir.stav_83310/dockerizing-a-flask-mysql-app-with-docker-compose-c4f51d20b40d
