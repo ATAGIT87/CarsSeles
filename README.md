@@ -1,9 +1,7 @@
-# this is my sample project
+# this is my sample project. this application is including Flask and Mariadb
 # there is 3 tables 
     * car
     * insurance
     * owns (car,insurance)
 # To run this application, follow the command steps below
-# 1- docker-compose up --build
-
-# this application is including Flask and Mariadb
+# docker-compose up --build
