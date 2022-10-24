@@ -5,3 +5,4 @@
     * owns (car,insurance)
 # To run this application, follow the command steps below
 # docker-compose up --build
+# open with http://127.0.0.1:5000
