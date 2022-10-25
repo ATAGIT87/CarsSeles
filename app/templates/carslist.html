@@ -30,8 +30,10 @@
             <th scope="col">Car Name</th>
             <th scope="col">year</th>
             <th scope="col">Price</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Edit Car</th>
+            <th scope="col">Edit Insu</th>
+            <th scope="col">Edit Person</th>
+            <th scope="col">Delete own</th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +44,15 @@
                     <td>{{ pr.name }}</th>
                     <td>{{ pr.address }}</td>
                     <td hidden>{{ pr.carid }}</th>
-                    <td hidden>{{ pr.carinsu }}</th>    
+                    <td hidden>{{ pr.insuid }}</th>    
                     <td>{{ pr.des }}</td>
                     <td>{{ pr.carname }}</td>
                     <td>{{ pr.year }}</td>
                     <td>{{ pr.price }}</td>
                     <td><a href='updatecar/{{ pr.idcar }}'>Edit Car</a></td>
-                    <td><a href='deletecar/{{ pr.id }}'>Delete</a></td>
+                    <td><a href='editinsu/{{ pr.insuid }}'>Edit Insu</a></td>
                     <td><a href='editperson/{{ pr.id }}'>Edit Person</a></td>
+                    <td><a href='deletecar/{{ pr.id }}'>Delete</a></td>
                 </tr>
             {% endfor %}
         </tbody>

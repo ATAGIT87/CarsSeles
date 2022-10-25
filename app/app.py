@@ -34,9 +34,11 @@ def index():
 
 @carsales.route("/addcar", methods = ['GET','POST'])
 def addcar():
+    car=[]
     connection = db_connection()
     if request.method == 'GET':
-        return render_template("addcar.html", car = {})
+        car.append({"idcar": '', "name": '', "year": '', "price": ''})
+        return render_template("addcar.html", car = car)
     if request.method == 'POST':
         id = int(request.form["id"])
         name = request.form["name"]
@@ -65,9 +67,11 @@ def carlist():
 
 @carsales.route("/addinsu", methods = ['GET','POST'])
 def addinsu():
+     insu=[]
      connection = db_connection()
      if request.method == 'GET':
-         return render_template("addinsu.html", insu = {})
+         insu.append({"insuid":'',"des":''})
+         return render_template("addinsu.html", insu = insu)
      if request.method == 'POST':
         id = int(request.form["id"])
         des = str(request.form["des"])
@@ -110,21 +114,17 @@ def deletecar(idcar):
 
 @carsales.route('/editperson/<int:idcar>',methods = ['GET','POST'])
 def editperson(idcar):
-    print('Hereeeeeeeeeeeeeee root')
     pr = []
     connection = db_connection()
     cursor = connection.cursor()
     if request.method == 'GET':
-        print('Hereeeeeeeeeeeeeee get')
         cursor.execute("SELECT * FROM carinfo.owns")
         for row in cursor.fetchall():
             pr.append({"id": row[0], "name": row[1], "address": row[2], "carid": row[3],"insu_id": row[4]})
         connection.close()
         return render_template("addperson.html", pr = {})
     if request.method == 'POST':
-        print('Hereeeeeeeeeeeeeee')
-
-
+    
         name = str(request.form["name"])
         address = str(request.form["address"])
         #car = int(request.form["carid"])
@@ -138,15 +138,15 @@ def editperson(idcar):
 
 @carsales.route('/updatecar/<int:idcar>',methods = ['GET','POST'])
 def updatecar(idcar):
-    cr = []
+    car = []
     connection = db_connection()
     cursor = connection.cursor()
     if request.method == 'GET':
         cursor.execute("SELECT * FROM car WHERE id= %s", (idcar,))
         for row in cursor.fetchall():
-            cr.append({"idcar": row[0], "name": row[1], "year": row[2], "price": row[3]})
+            car.append({"idcar": row[0], "name": row[1], "year": row[2], "price": row[3]})
         connection.close()
-        return render_template("addcar.html", car = {})
+        return render_template("addcar.html", car =car)
     if request.method == 'POST':
         name = str(request.form["name"])
         year = int(request.form["year"])
@@ -157,7 +157,28 @@ def updatecar(idcar):
         connection.commit()
         connection.close()
         return redirect('/')
-             
+
+
+
+@carsales.route('/editinsu/<int:insuid>',methods = ['GET','POST'])
+def editinsu(insuid):
+    insu = []
+    connection = db_connection()
+    cursor = connection.cursor()
+    if request.method == 'GET':
+        cursor.execute("SELECT * FROM insurance WHERE id= %s", (insuid,))
+        for row in cursor.fetchall():
+            insu.append({"insuid": row[0], "des": row[1]})
+        connection.close()
+        return render_template("addinsu.html", insu =insu)
+    if request.method == 'POST':
+        des = str(request.form["des"])
+        cursor = connection.cursor()
+        sql=("UPDATE carinfo.insurance SET des = %s WHERE id = %s")
+        cursor.execute(sql, (des, insuid))
+        connection.commit()
+        connection.close()
+        return redirect('/')
 
 
 
