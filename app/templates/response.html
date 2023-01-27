@@ -1,0 +1,31 @@
+<h3>Records Found</h3>
+<table id="tablesstyle" class="table table-striped custab">
+  <thead>
+      <tr>
+         <th>Name</th>
+         <th>address</th>
+         <th>car</th>
+         <th>year</th>
+         <th>price</th>
+         <th>house</th>
+         <th>boat color</th>
+         <th>boat enginge</th>
+         <th>job</th>
+      </tr>
+  </thead>
+  <tbody>
+{% for row in cars %}
+   <tr>
+    <td>{{row[0]}}</td>
+    <td>{{row[1]}}</td>
+    <td>{{row[2]}}</td>
+    <td>{{row[3]}}</td>
+    <td>{{row[4]}}</td>
+    <td>{{row[5]}}</td>
+    <td>{{row[6]}}</td>
+    <td>{{row[7]}}</td>
+    <td>{{row[8]}}</td>
+   </tr>
+{% endfor %} 
+  </tbody>
+</table>
