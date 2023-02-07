@@ -13,7 +13,7 @@ img {
     margin: 60px 0 30px 0;
     width: 250px;
 }
-input{
+#search_text{
     width: 500px;
     height: 50px;
     margin: 20px;

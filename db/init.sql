@@ -4,8 +4,9 @@ use test;
 --create table insurances and insert sample data
 CREATE TABLE IF NOT EXISTS test.insurance (id int(11) NOT NULL AUTO_INCREMENT,des varchar(100) NOT NULL, PRIMARY KEY (id));
 
-insert into test.insurance (id,des) SELECT 1,'AXA' FROM DUAL  WHERE NOT EXISTS (SELECT * FROM test.insurance);
-insert into test.insurance (id,des) SELECT 2,'ADAC' FROM DUAL  WHERE NOT EXISTS (SELECT * FROM test.insurance);
+insert into test.insurance (id,des) SELECT 1,'AXA' FROM DUAL ;
+
+insert into test.insurance (id,des) SELECT 2,'ADAC' FROM DUAL;
 
 --create table cars and insert sample data
 CREATE TABLE IF NOT EXISTS test.cars (id int(11) NOT NULL AUTO_INCREMENT, name varchar(100) NOT NULL, year varchar(20) NOT NULL,price varchar(20) DEFAULT NULL,insu_id int(11),PRIMARY KEY (id), CONSTRAINT fk_car_insu FOREIGN KEY (insu_id) REFERENCES test.insurance (id));

@@ -12,6 +12,3 @@ def db_connection():
     }
     connection = mysql.connector.connect(**config)
     return connection        
-
-if __name__ == '__main__':
-db_connection()  

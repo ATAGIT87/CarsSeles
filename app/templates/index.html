@@ -8,6 +8,25 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
+<table id="tablesstyle" >
+  <thead>
+      <tr>
+         <th>Name</th>
+         <th>address</th>
+         <th>car</th>
+      </tr>
+  </thead>
+  <tbody>
+{% for row in cars2 %}
+   <tr>
+    <td class="row-data">{{row[0]}}</td>
+    <td class="row-data">{{row[1]}}</td>
+    <td class="row-data">{{row[2]}}</td>
+   </tr>
+{% endfor %} 
+  </tbody>
+</table>
+
 <script>
 $(document).ready(function(){
   load_data();
