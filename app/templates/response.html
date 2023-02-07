@@ -29,17 +29,18 @@
     <thead>
         <tr>
            <th>Name</th>
-           <th>address</th>
-           <th>car</th>
+           <th>year</th>
+           <th>price</th>
+           <th>insurance</th>
         </tr>
     </thead>
     <tbody>
   {% for row in cars %}
-     <tr id="{{row[3]}}">
-      <td style = "display:none" class="row-data">{{row[3]}}</td>
-      <td class="row-data"><input type="button" value="{{row[4]}}" onclick="showinsu()" /></td>
+     <tr id="{{row[0]}}">
+      <td class="row-data">{{row[1]}}</td>
+      <td class="row-data">{{row[2]}}</td>
+      <td class="row-data">{{row[3]}}</td>
       <td class="row-data">{{row[5]}}</td>
-      <td class="row-data">{{row[6]}}</td>
      </tr>
   {% endfor %} 
     </tbody>
