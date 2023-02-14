@@ -1,13 +1,30 @@
-<h3>Records Found</h3>
+<table>
+<tr>
+<td>
 <table id="tablesstyle" class="table table-striped custab">
   <thead>
       <tr>
-         <th>Name</th>
-         <th>address</th>
+         <th>id</th>
+         <th>des</th>
+      </tr>
+  </thead>
+  <tbody>
+{% for row in jobs %}  
+   <tr> 
+    <td class="row-data">{{row[0]}}</td>
+    <td class="row-data">{{row[1]}}</td>
+   </tr>
+{% endfor %} 
+  </tbody>
+</table>
+</td>
+<td>
+<table id="tablesstyle" class="table table-striped custab">
+  <thead>
+      <tr>
+         <th>name</th>
          <th>car</th>
-         <th>house</th>
-         <th>boat color</th>
-         <th>boat enginge</th>
+         <th>boat</th>
          <th>job</th>
       </tr>
   </thead>
@@ -15,25 +32,49 @@
 {% for row in person %}  
    <tr id="{{row[0]}}"> 
     <td class="row-data">{{row[1]}}</td>
-    <td class="row-data">{{row[2]}}</td>
     <td style = "display:none" class="row-data">{{row[3]}}</td>
     <td class="row-data"><a href="javascript:void(0)" onclick="generateTable()">{{row[4]}} </a></td> 
-    <td style = "display:none" class="row-data">{{row[5]}}</td>
-    <td style = "display:none" class="row-data">{{row[6]}}</td>
-    <td class="row-data">{{row[7]}}</td>
-    <td class="row-data">{{row[8]}}</td>
     <td class="row-data">{{row[9]}}</td>
     <td class="row-data">{{row[10]}}</td>
    </tr>
 {% endfor %} 
   </tbody>
+</table>
+  </td>
+  <td>
+  <table id="tablesstyle" class="table table-striped custab">
+    <thead>
+        <tr>
+           <th>id</th>
+           <th>des</th>
+        </tr>
+    </thead>
+    <tbody>
+  {% for row in insu %}  
+     <tr> 
+      <td class="row-data">{{row[0]}}</td>
+      <td class="row-data">{{row[1]}}</td>
+     </tr>
+  {% endfor %} 
+    </tbody>
+  </table>
+  </td>        
+  </tr>  
+  </table>
 <script>
         function generateTable(){
                var rowId =event.target.parentNode.parentNode.id;
         //this gives id of tr whose button was clicked
                var data =
                document.getElementById(rowId).querySelectorAll(".row-data");
-
+              
+               $.ajax({
+                        type: "POST",
+                        url: "/selectcars.py",
+                        data: { param: data[1].innerHTML}
+                      }).done(function( o ) {
+                        alert("id:" + data[1].innerHTML);
+                      });
                const tbl = document.createElement("table");
                const tblBody = document.createElement("tbody");
 
@@ -61,8 +102,6 @@
               // appends <table> into <body>
               document.body.appendChild(tbl);
               tbl.setAttribute("id","tablesstyle");
-                          
-               
                
                }      
 </script>
