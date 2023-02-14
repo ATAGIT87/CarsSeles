@@ -17,7 +17,9 @@
     <td class="row-data">{{row[1]}}</td>
     <td class="row-data">{{row[2]}}</td>
     <td style = "display:none" class="row-data">{{row[3]}}</td>
-    <td class="row-data"><input type="button" value="{{row[4]}}" onclick="show()" /></td>
+    <td class="row-data"><a href="javascript:void(0)" onclick="generateTable()">{{row[4]}} </a></td> 
+    <td style = "display:none" class="row-data">{{row[5]}}</td>
+    <td style = "display:none" class="row-data">{{row[6]}}</td>
     <td class="row-data">{{row[7]}}</td>
     <td class="row-data">{{row[8]}}</td>
     <td class="row-data">{{row[9]}}</td>
@@ -25,43 +27,42 @@
    </tr>
 {% endfor %} 
   </tbody>
-  <table id="tablesstyle" >
-    <thead>
-        <tr>
-           <th>Name</th>
-           <th>year</th>
-           <th>price</th>
-           <th>insurance</th>
-        </tr>
-    </thead>
-    <tbody>
-  {% for row in cars %}
-     <tr id="{{row[0]}}">
-      <td class="row-data">{{row[1]}}</td>
-      <td class="row-data">{{row[2]}}</td>
-      <td class="row-data">{{row[3]}}</td>
-      <td class="row-data">{{row[5]}}</td>
-     </tr>
-  {% endfor %} 
-    </tbody>
-  </table>
 <script>
-  function show() {
-    var rowId =
-                event.target.parentNode.parentNode.id;
+        function generateTable(){
+               var rowId =event.target.parentNode.parentNode.id;
         //this gives id of tr whose button was clicked
-            var data =
-        document.getElementById(rowId).querySelectorAll(".row-data");
-        /*returns array of all elements with
-        "row-data" class within the row with given id*/
-          
-            var id = data[2].innerHTML;
-          
-            alert("id: " + id);
-      $.ajax({
-        type: "POST",
-        url: "/selectcars",
-        data: {"id":id},
-        });
-  }
+               var data =
+               document.getElementById(rowId).querySelectorAll(".row-data");
+
+               const tbl = document.createElement("table");
+               const tblBody = document.createElement("tbody");
+
+              // creating all cells
+                for (let i = 0; i < 2; i++) {
+                // creates a table row
+                const row = document.createElement("tr");
+
+                for (let j = 0; j < data.length; j++) {
+                  // Create a <td> element and a text node, make the text
+                  // node the contents of the <td>, and put the <td> at
+                  // the end of the table row
+                  const cell = document.createElement("td");
+                  const cellText = document.createTextNode(`${data[j].innerHTML}`);
+                  cell.appendChild(cellText);
+                  row.appendChild(cell);
+                }
+
+                // add the row to the end of the table body
+                tblBody.appendChild(row);
+              }
+
+              // put the <tbody> in the <table>
+              tbl.appendChild(tblBody);
+              // appends <table> into <body>
+              document.body.appendChild(tbl);
+              tbl.setAttribute("id","tablesstyle");
+                          
+               
+               
+               }      
 </script>

@@ -48,10 +48,10 @@ def selectcars():
      cars = []
      print('hiier ist select cars')
      search_word = request.form['id'] 
-     qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and c.id=%{}%".format(search_word)
+     qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and c.id={}".format(search_word)
      cur.execute(qu)
      cars= cur.fetchall()
-     return jsonify({'htmlresponse': render_template('response.html', cars=cars)})
+     return render_template('index.html',cars=cars)
 
 if __name__ == '__main__':
     carsales.run(host='0.0.0.0')
