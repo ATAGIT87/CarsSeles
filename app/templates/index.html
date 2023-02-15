@@ -23,6 +23,28 @@ $(document).ready(function(){
       $("#result").append(data.htmlresponse);
     }
    });
+   var query2 = '';
+   $.ajax({
+    url:"/selectcars",
+    method:"POST",
+    data:{query2:query2},
+    success:function(data)
+    {
+      $('#result2').html(data);
+      $("#result2").append(data.htmlresponse2);
+    }
+   });
+   var query3 = '';
+   $.ajax({
+    url:"/selectjobs",
+    method:"POST",
+    data:{query3:query3},
+    success:function(data)
+    {
+      $('#result3').html(data);
+      $("#result3").append(data.htmlresponse3);
+    }
+   });
   }
   $('#search_text').keyup(function(){
     var search = $(this).val();
@@ -47,8 +69,10 @@ $(document).ready(function(){
                         <input type="text" name="search_text" id="search_text" class="form-control" placeholder="Search all fields">
                     </div> 
                 </div>
-            </div>
+            </div>        
    <div id="result"></div>
+   <div id="result2"></div>
+   <div id="result3"></div>
 </div>
 </body>
 </html>

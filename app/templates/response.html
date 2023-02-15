@@ -1,24 +1,4 @@
-<table>
-<tr>
-<td>
-<table id="tablesstyle" class="table table-striped custab">
-  <thead>
-      <tr>
-         <th>id</th>
-         <th>des</th>
-      </tr>
-  </thead>
-  <tbody>
-{% for row in jobs %}  
-   <tr> 
-    <td class="row-data">{{row[0]}}</td>
-    <td class="row-data">{{row[1]}}</td>
-   </tr>
-{% endfor %} 
-  </tbody>
-</table>
-</td>
-<td>
+
 <table id="tablesstyle" class="table table-striped custab">
   <thead>
       <tr>
@@ -40,41 +20,26 @@
 {% endfor %} 
   </tbody>
 </table>
-  </td>
-  <td>
-  <table id="tablesstyle" class="table table-striped custab">
-    <thead>
-        <tr>
-           <th>id</th>
-           <th>des</th>
-        </tr>
-    </thead>
-    <tbody>
-  {% for row in insu %}  
-     <tr> 
-      <td class="row-data">{{row[0]}}</td>
-      <td class="row-data">{{row[1]}}</td>
-     </tr>
-  {% endfor %} 
-    </tbody>
-  </table>
-  </td>        
-  </tr>  
-  </table>
 <script>
         function generateTable(){
                var rowId =event.target.parentNode.parentNode.id;
         //this gives id of tr whose button was clicked
                var data =
                document.getElementById(rowId).querySelectorAll(".row-data");
-              
+               var query2 = data[1].innerHTML;
+               alert (data[1].innerHTML);
                $.ajax({
-                        type: "POST",
-                        url: "/selectcars.py",
-                        data: { param: data[1].innerHTML}
-                      }).done(function( o ) {
-                        alert("id:" + data[1].innerHTML);
+                        url:"/selectcars",
+                        method:"POST",
+                        data:{query2:query2},
+                        success:function(data)
+                        {
+                          $('#result2').html(data);
+                          $("#result2").append(data.htmlresponse2);
+                        }
                       });
+
+                       
                const tbl = document.createElement("table");
                const tblBody = document.createElement("tbody");
 

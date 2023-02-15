@@ -33,6 +33,16 @@ img {
     border-radius: 5px;
     
 }
+#result2{
+    background-color: rgb(172, 172, 172);
+    text-align: center;
+    font-family: Shanti;
+    font-size: 0.8em;
+    margin: 20px;
+    box-shadow: 0 0 0 2px black;
+    border-radius: 5px;
+    
+}
 #row-border{
     border-top: 2px solid gray;
     grid-column: 1 / 5; /* this code makes the row stretch to entire width of the container */

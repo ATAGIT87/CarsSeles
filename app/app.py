@@ -61,11 +61,28 @@ def selectcars():
      cur = connection.cursor()
      insu = []
      print('hiier ist select cars')
-     search_word = request.form['param'] 
-     qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and c.id={}".format(search_word)
-     cur.execute(qu)
-     insu= cur.fetchall()
-     return render_template('index.html',insu=insu)
+     search_word = request.form['query2'] 
+     if search_word == '':
+        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id"
+        cur.execute(qu)
+        insu= cur.fetchall()
+     else:
+        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and c.id={}".format(search_word)
+        cur.execute(qu)
+        insu= cur.fetchall()   
+     return jsonify({'htmlresponse2': render_template('response2.html',insu=insu)})
+
+@carsales.route("/selectjobs",methods=["POST","GET"])
+def selectjobs():
+     connection = db_connection()
+     cur = connection.cursor()
+     insu = []
+     print('hiier ist select cars')
+     search_word = request.form['query3'] 
+     queryjobs = " select id, titel from jobs"
+     cur.execute(queryjobs)
+     jobs= cur.fetchall()  
+     return jsonify({'htmlresponse3': render_template('response3.html',jobs=jobs)})     
 
 if __name__ == '__main__':
     carsales.run(host='0.0.0.0')
