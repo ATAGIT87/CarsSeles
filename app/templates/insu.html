@@ -1,0 +1,70 @@
+<table id="tablesstyle" class="table table-striped custab">
+    <thead>
+        <tr>
+           <th>id</th>
+           <th>des</th>
+        </tr>
+    </thead>
+    <tbody>
+  {% for row in insu %}  
+     <tr  id="{{row[4]}}"> 
+      <td class="row-data">{{row[4]}}</td>
+      <td style = "display:none" class="row-data">{{row[5]}}</td>
+      <td class="row-data"><a href="javascript:void(0)" onclick="loadinsu()">{{row[5]}} </a></td> 
+     </tr>
+  {% endfor %} 
+    </tbody>
+  </table>
+  <script>
+   function loadinsu()
+         {
+
+          var rowId =event.target.parentNode.parentNode.id;
+   //this gives id of tr whose button was clicked
+          var data =
+          document.getElementById(rowId).querySelectorAll(".row-data");
+          var selectedinsu = data[4].innerHTML;
+          //alert (selectedinsu);
+          //var inputCar = document.getElementById("search_car");
+          if(document.getElementById("search_text") ==null)
+          {
+          var inputF = document.getElementById("search_car");
+          }
+          else var inputF = document.getElementById("search_text");
+        // alert(inputF);
+          inputF.value = data[1].innerHTML;
+          inputF.setAttribute("id","search_insu");
+           $.ajax({
+             url:"/selectcars",
+             method:"POST",
+             data:{insu:selectedinsu},
+             success:function(data)
+             {
+              // alert(selectedinsu);
+               $('#resultM').html(data);
+               $("#resultM").append(data.htmlcar);
+             }
+           });
+           $.ajax({
+             url:"/selectinsu",
+             method:"POST",
+             data:{insu:selectedinsu},
+             success:function(data)
+             {
+               $('#resultL').html(data);
+               $("#resultL").append(data.htmlinsu);
+             }
+           });
+           var query ='';
+           $.ajax({
+             url:"/ajaxlivesearch",
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+               $('#resultR').html(data);
+               $("#resultR").append(data.htmlperson);
+             }
+           });
+         }     
+</script>

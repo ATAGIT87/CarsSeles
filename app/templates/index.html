@@ -19,8 +19,8 @@ $(document).ready(function(){
     data:{query:query},
     success:function(data)
     {
-      $('#result').html(data);
-      $("#result").append(data.htmlresponse);
+      $('#resultM').html(data);
+      $("#resultM").append(data.htmlperson);
     }
    });
    var query2 = '';
@@ -30,8 +30,8 @@ $(document).ready(function(){
     data:{query2:query2},
     success:function(data)
     {
-      $('#result2').html(data);
-      $("#result2").append(data.htmlresponse2);
+      $('#resultR').html(data);
+      $("#resultR").append(data.htmlcar);
     }
    });
    var query3 = '';
@@ -41,52 +41,84 @@ $(document).ready(function(){
     data:{query3:query3},
     success:function(data)
     {
-      $('#result3').html(data);
-      $("#result3").append(data.htmlresponse3);
+      $('#resultL').html(data);
+      $("#resultL").append(data.htmlinsu);
     }
    });
   $('#search_text').keyup(function(){
     var search = $(this).val();
     if(search != ''){
-      alert(search);
     load_data(search);
    }else{
     load_data();
    }
   });
-  $('#search_car').keyup(function(){
-    var search = $(this).val();
-    if(search != ''){
-      alert(search);
-      var query2 = '';
-   $.ajax({
-    url:"/selectcars",
-    method:"POST",
-    data:{query2:search},
-    success:function(data)
-    {
-      $('#result2').html(data);
-      $("#result2").append(data.htmlresponse2);
-    }
-   });
-   var query3 = '';
-   $.ajax({
-    url:"/selectinsu",
-    method:"POST",
-    data:{query3:search},
-    success:function(data)
-    {
-      $('#result3').html(data);
-      $("#result3").append(data.htmlresponse3);
-    }
-   });
-   }else{
-    load_data();
-   }
-  });
+          
+          $('#search_car').keyup(function(){
+            var search = $(this).val();
+          $.ajax({
+            url:"/selectcars",
+            method:"POST",
+            data:{query2:search},
+            success:function(data)
+            {
+              $('#resultM').html(data);
+              $("#resultM").append(data.htmlcar);
+            }
+          });
+          var query3 = '';
+          $.ajax({
+            url:"/selectinsu",
+            method:"POST",
+            data:{query3:search},
+            success:function(data)
+            {
+              $('#resultL').html(data);
+              $("#resultL").append(data.htmlinsu);
+            }
+          });
+          var query = '';
+          $.ajax({
+            url:"/ajaxlivesearch",
+            method:"POST",
+            data:{query:query},
+            success:function(data)
+            {
+              $('#resultR').html(data);
+              $("#resultR").append(data.htmlperson);
+            }
+          });
+          });
 }
 } );
+
+
+
+function tableCreate() {
+    var body = document.getElementsByTagName('body')[0];
+    var tbl = document.createElement('table');
+    tbl.style.width = '100%';
+    tbl.setAttribute('border', '1');
+    var tbdy = document.createElement('tbody');
+    for (var i = 0; i < 3; i++) {
+      var tr = document.createElement('tr');
+      for (var j = 0; j < 2; j++) {
+        if (i == 2 && j == 1) {
+          break
+        } else {
+          var td = document.createElement('td');
+          td.appendChild(document.createTextNode('test'))
+          i == 1 && j == 1 ? td.setAttribute('rowSpan', '2') : null;
+          tr.appendChild(td)
+        }
+      }
+      tbdy.appendChild(tr);
+    }
+    tbl.appendChild(tbdy);
+    body.appendChild(tbl)
+  }
 </script>
+
 </head>
 <body>
 <div class="container search-table">
@@ -99,12 +131,13 @@ $(document).ready(function(){
                     <div class="col-md-9">
                         <input type="text" name="search_text" id="search_text" class="form-control" placeholder="Search all fields">
                     </div> 
+                    <button onclick="tableCreate()">Click me</button>
                 </div>
             </div>        
    <div style=" display: flex;">
-   <div id="result" style="width:33%;"></div>
-   <div id="result2" style="width:33%;"></div>
-   <div id="result3" style="width:33%;"></div>
+   <div id="resultR" style="width:33%;"></div>
+   <div id="resultM" style="width:33%;"></div>
+   <div id="resultL" style="width:33%;"></div>
   </div>         
 </div>
 </body>
