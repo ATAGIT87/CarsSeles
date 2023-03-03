@@ -30,7 +30,7 @@ def ajaxlivesearch():
      jobs =[]
      print('hiier ist ajax')
      if request.method == 'POST':
-        search_word = request.form['query']
+        search_word = request.form['query'] 
      if search_word == '':
             query = " select p.id,p.name,p.address,c.id,c.name,c.year,c.price,h.address,b.color,b.engine,j.titel from persons p, cars c,houses h, boats b, jobs j where p.car_id=c.id and p.house_id=h.id and p.boat_id=b.id and p.job_id=j.id ORDER BY p.name"
             queryinsu = " select id,des from insurance"
@@ -67,22 +67,29 @@ def selectcars():
         cur.execute(qu)
         insu= cur.fetchall()
      else:
-        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and c.id={}".format(search_word)
+        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and (c.name LIKE '%{}%' OR c.year LIKE '%{}%' OR c.price LIKE '%{}%')".format(search_word,search_word,search_word)
         cur.execute(qu)
-        insu= cur.fetchall()   
+        insu= cur.fetchall()  
+    
      return jsonify({'htmlresponse2': render_template('response2.html',insu=insu)})
 
-@carsales.route("/selectjobs",methods=["POST","GET"])
-def selectjobs():
+@carsales.route("/selectinsu",methods=["POST","GET"])
+def selectinsu():
      connection = db_connection()
      cur = connection.cursor()
      insu = []
-     print('hiier ist select cars')
+     print('hiier ist select insu')
      search_word = request.form['query3'] 
-     queryjobs = " select id, titel from jobs"
-     cur.execute(queryjobs)
-     jobs= cur.fetchall()  
-     return jsonify({'htmlresponse3': render_template('response3.html',jobs=jobs)})     
+     if search_word == '':
+        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id"
+        cur.execute(qu)
+        insu= cur.fetchall()
+     else:
+        qu  = "select c.id,c.name,c.year,c.price,i.id,i.des from cars c,insurance i where c.insu_id=i.id and (c.name LIKE '%{}%' OR c.year LIKE '%{}%' OR c.price LIKE '%{}%')".format(search_word,search_word,search_word)
+        cur.execute(qu)
+        insu= cur.fetchall()  
+     
+     return jsonify({'htmlresponse3': render_template('response3.html',insu=insu)})
 
 if __name__ == '__main__':
     carsales.run(host='0.0.0.0')

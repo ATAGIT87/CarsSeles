@@ -36,7 +36,7 @@ $(document).ready(function(){
    });
    var query3 = '';
    $.ajax({
-    url:"/selectjobs",
+    url:"/selectinsu",
     method:"POST",
     data:{query3:query3},
     success:function(data)
@@ -45,15 +45,46 @@ $(document).ready(function(){
       $("#result3").append(data.htmlresponse3);
     }
    });
-  }
   $('#search_text').keyup(function(){
     var search = $(this).val();
     if(search != ''){
+      alert(search);
     load_data(search);
    }else{
     load_data();
    }
   });
+  $('#search_car').keyup(function(){
+    var search = $(this).val();
+    if(search != ''){
+      alert(search);
+      var query2 = '';
+   $.ajax({
+    url:"/selectcars",
+    method:"POST",
+    data:{query2:search},
+    success:function(data)
+    {
+      $('#result2').html(data);
+      $("#result2").append(data.htmlresponse2);
+    }
+   });
+   var query3 = '';
+   $.ajax({
+    url:"/selectinsu",
+    method:"POST",
+    data:{query3:search},
+    success:function(data)
+    {
+      $('#result3').html(data);
+      $("#result3").append(data.htmlresponse3);
+    }
+   });
+   }else{
+    load_data();
+   }
+  });
+}
 } );
 </script>
 </head>
@@ -70,9 +101,11 @@ $(document).ready(function(){
                     </div> 
                 </div>
             </div>        
-   <div id="result"></div>
-   <div id="result2"></div>
-   <div id="result3"></div>
+   <div style=" display: flex;">
+   <div id="result" style="width:33%;"></div>
+   <div id="result2" style="width:33%;"></div>
+   <div id="result3" style="width:33%;"></div>
+  </div>         
 </div>
 </body>
 </html>

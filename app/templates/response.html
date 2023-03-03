@@ -13,7 +13,8 @@
    <tr id="{{row[0]}}"> 
     <td class="row-data">{{row[1]}}</td>
     <td style = "display:none" class="row-data">{{row[3]}}</td>
-    <td class="row-data"><a href="javascript:void(0)" onclick="generateTable()">{{row[4]}} </a></td> 
+    <td class="row-data"><a href="javascript:void(0)" onclick="loadcar()">{{row[4]}} </a></td> 
+    <td style = "display:none" class="row-data">{{row[4]}}</td>
     <td class="row-data">{{row[9]}}</td>
     <td class="row-data">{{row[10]}}</td>
    </tr>
@@ -21,52 +22,39 @@
   </tbody>
 </table>
 <script>
-        function generateTable(){
+        function loadcar()
+              {
                var rowId =event.target.parentNode.parentNode.id;
         //this gives id of tr whose button was clicked
                var data =
                document.getElementById(rowId).querySelectorAll(".row-data");
-               var query2 = data[1].innerHTML;
-               alert (data[1].innerHTML);
-               $.ajax({
-                        url:"/selectcars",
-                        method:"POST",
-                        data:{query2:query2},
-                        success:function(data)
-                        {
-                          $('#result2').html(data);
-                          $("#result2").append(data.htmlresponse2);
-                        }
-                      });
-
-                       
-               const tbl = document.createElement("table");
-               const tblBody = document.createElement("tbody");
-
-              // creating all cells
-                for (let i = 0; i < 2; i++) {
-                // creates a table row
-                const row = document.createElement("tr");
-
-                for (let j = 0; j < data.length; j++) {
-                  // Create a <td> element and a text node, make the text
-                  // node the contents of the <td>, and put the <td> at
-                  // the end of the table row
-                  const cell = document.createElement("td");
-                  const cellText = document.createTextNode(`${data[j].innerHTML}`);
-                  cell.appendChild(cellText);
-                  row.appendChild(cell);
-                }
-
-                // add the row to the end of the table body
-                tblBody.appendChild(row);
-              }
-
-              // put the <tbody> in the <table>
-              tbl.appendChild(tblBody);
-              // appends <table> into <body>
-              document.body.appendChild(tbl);
-              tbl.setAttribute("id","tablesstyle");
-               
-               }      
+               var selectedcar = data[3].innerHTML;
+               alert (data[3].innerHTML);
+               var inputF = document.getElementById("search_text");
+               inputF.value = data[3].innerHTML;
+               inputF.setAttribute("id","search_car");
+                $.ajax({
+                  url:"/selectcars",
+                  method:"POST",
+                  data:{query2:selectedcar},
+                  success:function(data)
+                  {
+                    alert(selectedcar);
+                    $('#result2').html(data);
+                    $("#result2").append(data.htmlresponse2);
+                    $('#result').html(data);
+                    $("#result").remove(data.htmlresponse);
+                  }
+                });
+                $.ajax({
+                  url:"/selectinsu",
+                  method:"POST",
+                  data:{query3:selectedcar},
+                  success:function(data)
+                  {
+                    $('#result3').html(data);
+                    $("#result3").append(data.htmlresponse3);
+                  }
+                });
+              }     
 </script>

@@ -1,16 +1,17 @@
 <table id="tablesstyle" class="table table-striped custab">
-  <thead>
-      <tr>
-         <th>id</th>
-         <th>des</th>
-      </tr>
-  </thead>
-  <tbody>
-{% for row in jobs %}  
-   <tr> 
-    <td class="row-data">{{row[0]}}</td>
-    <td class="row-data">{{row[1]}}</td>
-   </tr>
-{% endfor %} 
-  </tbody>
-</table>
+    <thead>
+        <tr>
+           <th>id</th>
+           <th>des</th>
+        </tr>
+    </thead>
+    <tbody>
+  {% for row in insu %}  
+     <tr> 
+      <td class="row-data">{{row[4]}}</td>
+      <td class="row-data">{{row[5]}}</td>
+      <td class="row-data"><a href="javascript:void(0)" onclick="loadinsu()">{{row[5]}} </a></td> 
+     </tr>
+  {% endfor %} 
+    </tbody>
+  </table>
